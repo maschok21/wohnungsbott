@@ -2,10 +2,8 @@ name: Wohnungsbot
 
 on:
   schedule:
-    # Alle 15 Minuten. GitHub garantiert keine exakte Einhaltung des
-    # Intervalls, besonders zu Stosszeiten kann es ein paar Minuten Verzug geben.
     - cron: "*/15 * * * *"
-  workflow_dispatch: {}   # manuelles Starten über den "Run workflow"-Button
+  workflow_dispatch: {}
 
 jobs:
   check:
@@ -17,19 +15,15 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Abhängigkeiten installieren
+      - name: Abhaengigkeiten installieren
         run: pip install -r requirements.txt
 
-      - name: Bot ausführen
+      - name: Bot ausfuehren
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python wohnungsbot.py
 
-      # seen_ads.json zurück ins Repo committen, damit der nächste Lauf
-      # weiss, welche Anzeigen schon gemeldet wurden. Das committet auch
-      # gleichzeitig regelmässig etwas ins Repo, wodurch GitHub den
-      # Workflow nicht wegen "60 Tage Inaktivität" automatisch deaktiviert.
       - name: seen_ads.json committen
         run: |
           git config user.name "wohnungsbot"
