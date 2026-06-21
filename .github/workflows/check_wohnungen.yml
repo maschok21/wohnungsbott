@@ -1,5 +1,9 @@
 name: Wohnungsbot
 
+permissions:
+  contents: write
+
+
 on:
   schedule:
     - cron: "*/15 * * * *"
